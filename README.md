@@ -1,7 +1,7 @@
 # agghoo
 
 R package for model selection based on aggregation.
-Alternative to standard corss-validation.
+Alternative to standard cross-validation.
 
 ## Install the package
 

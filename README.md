@@ -9,5 +9,5 @@ R CMD INSTALL .
 
 ## Use the package
 
-> library(agghoo)
-> ?agghoo
+    library(agghoo)
+    ?agghoo

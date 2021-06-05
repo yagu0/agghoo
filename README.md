@@ -5,7 +5,9 @@ Alternative to standard cross-validation.
 
 ## Install the package
 
-R CMD INSTALL .
+From GitHub: `devtools::install_github("yagu0/agghoo")`
+
+Locally, in a terminal: `R CMD INSTALL .`
 
 ## Use the package
 

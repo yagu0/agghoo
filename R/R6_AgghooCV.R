@@ -5,9 +5,9 @@
 #' from the list of models (see 'Model' class).
 #'
 #' @export
-Agghoo <- R6::R6Class("Agghoo",
+AgghooCV <- R6::R6Class("AgghooCV",
   public = list(
-    #' @description Create a new Agghoo object.
+    #' @description Create a new AgghooCV object.
     #' @param data Matrix or data.frame
     #' @param target Vector of targets (generally numeric or factor)
     #' @param task "regression" or "classification"

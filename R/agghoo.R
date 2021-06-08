@@ -16,9 +16,9 @@
 #'        Default: see R6::Model.
 #' @param quality A function assessing the quality of a prediction.
 #'        Arguments are y1 and y2 (comparing a prediction to known values).
-#'        Default: see R6::Agghoo.
+#'        Default: see R6::AgghooCV.
 #'
-#' @return An R6::Agghoo object.
+#' @return An R6::AgghooCV object.
 #'
 #' @examples
 #' # Regression:
@@ -66,8 +66,8 @@ agghoo <- function(data, target, task = NA, gmodel = NA, params = NA, quality = 
   }
   # Build Model object (= list of parameterized models)
   model <- Model$new(data, target, task, gmodel, params)
-  # Return Agghoo object, to run and predict
-  Agghoo$new(data, target, task, model, quality)
+  # Return AgghooCV object, to run and predict
+  AgghooCV$new(data, target, task, model, quality)
 }
 
 #' compareToStandard

@@ -28,6 +28,6 @@ License: MIT + file LICENSE
 RoxygenNote: 7.1.1
 Collate: 
     'agghoo.R'
-    'R6_Agghoo.R'
+    'R6_AgghooCV.R'
     'R6_Model.R'
     'A_NAMESPACE.R'

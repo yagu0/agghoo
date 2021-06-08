@@ -26,10 +26,10 @@ Default: see R6::Model.}
 
 \item{quality}{A function assessing the quality of a prediction.
 Arguments are y1 and y2 (comparing a prediction to known values).
-Default: see R6::Agghoo.}
+Default: see R6::AgghooCV.}
 }
 \value{
-An R6::Agghoo object.
+An R6::AgghooCV object.
 }
 \description{
 Run the agghoo procedure. (...)

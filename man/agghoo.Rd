@@ -4,7 +4,7 @@
 \alias{agghoo}
 \title{agghoo}
 \usage{
-agghoo(data, target, task = NA, gmodel = NA, params = NA, quality = NA)
+agghoo(data, target, task = NULL, gmodel = NULL, params = NULL, quality = NULL)
 }
 \arguments{
 \item{data}{Data frame or matrix containing the data in lines.}

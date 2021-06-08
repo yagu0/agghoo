@@ -30,7 +30,7 @@ Model family can be chosen among "rf", "tree", "ppr" and "knn" for now.
 \subsection{Method \code{new()}}{
 Create a new generic model.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$new(data, target, task, gmodel = NA, params = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$new(data, target, task, gmodel = NULL, params = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

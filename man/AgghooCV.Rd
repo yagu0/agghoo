@@ -22,7 +22,7 @@ from the list of models (see 'Model' class).
 \subsection{Method \code{new()}}{
 Create a new AgghooCV object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$new(data, target, task, gmodel, quality = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$new(data, target, task, gmodel, quality = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

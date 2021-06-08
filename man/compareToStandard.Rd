@@ -4,7 +4,7 @@
 \alias{compareToStandard}
 \title{compareToStandard}
 \usage{
-compareToStandard(df, t_idx, task = NA, rseed = -1)
+compareToStandard(df, t_idx, task = NULL, rseed = -1)
 }
 \description{
 Temporary function to compare agghoo to CV

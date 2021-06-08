@@ -20,7 +20,8 @@ Imports:
     R6,
     caret,
     rpart,
-    randomForest
+    randomForest,
+    FNN
 Suggests:
     roxygen2
 URL: https://git.auder.net/?p=agghoo.git

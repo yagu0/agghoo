@@ -6,6 +6,13 @@
 #' Parameters for cross-validation are either provided or estimated.
 #' Model family can be chosen among "rf", "tree", "ppr" and "knn" for now.
 #'
+#' @importFrom FNN knn.reg
+#' @importFrom class knn
+#' @importFrom stats ppr
+#' @importFrom randomForest randomForest
+#' @importFrom rpart rpart
+#' @importFrom caret var_seq
+#'
 #' @export
 Model <- R6::R6Class("Model",
   public = list(
@@ -18,8 +25,8 @@ Model <- R6::R6Class("Model",
     #' @param gmodel Generic model returning a predictive function; chosen
     #'               automatically given data and target nature if not provided.
     #' @param params List of parameters for cross-validation (each defining a model)
-    initialize = function(data, target, task, gmodel = NA, params = NA) {
-      if (is.na(gmodel)) {
+    initialize = function(data, target, task, gmodel = NULL, params = NULL) {
+      if (is.null(gmodel)) {
         # (Generic) model not provided
         all_numeric <- is.numeric(as.matrix(data))
         if (!all_numeric)
@@ -30,7 +37,7 @@ Model <- R6::R6Class("Model",
           # Numerical data
           gmodel = ifelse(task == "regression", "ppr", "knn")
       }
-      if (is.na(params))
+      if (is.null(params))
         # Here, gmodel is a string (= its family),
         # because a custom model must be given with its parameters.
         params <- as.list(private$getParams(gmodel, data, target))
@@ -52,8 +59,8 @@ Model <- R6::R6Class("Model",
   ),
   private = list(
     # No need to expose model or parameters list
-    gmodel = NA,
-    params = NA,
+    gmodel = NULL,
+    params = NULL,
     # Main function: given a family, return a generic model, which in turn
     # will output a predictive model from data + target + params.
     getGmodel = function(family, task) {
@@ -62,7 +69,7 @@ Model <- R6::R6Class("Model",
           require(rpart)
           method <- ifelse(task == "classification", "class", "anova")
           df <- data.frame(cbind(dataHO, target=targetHO))
-          model <- rpart(target ~ ., df, method=method, control=list(cp=param))
+          model <- rpart::rpart(target ~ ., df, method=method, control=list(cp=param))
           function(X) predict(model, X)
         }
       }
@@ -82,9 +89,17 @@ Model <- R6::R6Class("Model",
         }
       }
       else if (family == "knn") {
-        function(dataHO, targetHO, param) {
-          require(class)
-          function(X) class::knn(dataHO, X, cl=targetHO, k=param)
+        if (task == "classification") {
+          function(dataHO, targetHO, param) {
+            require(class)
+            function(X) class::knn(dataHO, X, cl=targetHO, k=param)
+          }
+        }
+        else {
+          function(dataHO, targetHO, param) {
+            require(FNN)
+            function(X) FNN::knn.reg(dataHO, X, y=targetHO, k=param)$pred
+          }
         }
       }
     },

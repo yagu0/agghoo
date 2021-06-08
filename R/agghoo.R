@@ -50,7 +50,7 @@ agghoo <- function(data, target, task = NA, gmodel = NA, params = NA, quality = 
     params <- as.list(params)
   if (!is.na(params) && !is.list(params))
     stop("params: numerical, character, or list (passed to model)")
-  if (!is.na(gmodel) && !is.character(model) && is.na(params))
+  if (!is.na(gmodel) && !is.character(gmodel) && is.na(params))
     stop("params must be provided when using a custom model")
   if (is.na(gmodel) && !is.na(params))
     stop("model must be provided when using custom params")

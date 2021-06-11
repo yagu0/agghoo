@@ -49,12 +49,17 @@ Model <- R6::R6Class("Model",
     },
     #' @description
     #' Returns the model at index "index", trained on dataHO/targetHO.
-    #' index is between 1 and self$nmodels.
     #' @param dataHO Matrix or data.frame
     #' @param targetHO Vector of targets (generally numeric or factor)
     #' @param index Index of the model in 1...nmodels
     get = function(dataHO, targetHO, index) {
       private$gmodel(dataHO, targetHO, private$params[[index]])
+    },
+    #' @description
+    #' Returns the parameter at index "index".
+    #' @param index Index of the model in 1...nmodels
+    getParam = function(index) {
+      private$params[[index]]
     }
   ),
   private = list(

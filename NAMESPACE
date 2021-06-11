@@ -3,7 +3,6 @@
 export(AgghooCV)
 export(Model)
 export(agghoo)
-export(compareToStandard)
 importFrom(FNN,knn.reg)
 importFrom(R6,R6Class)
 importFrom(caret,var_seq)

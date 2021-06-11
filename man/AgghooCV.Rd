@@ -7,12 +7,20 @@
 Class encapsulating the methods to run to obtain the best predictor
 from the list of models (see 'Model' class).
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{params}}{List of parameters of the V selected models}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AgghooCV$new()}}
 \item \href{#method-fit}{\code{AgghooCV$fit()}}
 \item \href{#method-predict}{\code{AgghooCV$predict()}}
+\item \href{#method-getParams}{\code{AgghooCV$getParams()}}
 \item \href{#method-clone}{\code{AgghooCV$clone()}}
 }
 }
@@ -22,7 +30,7 @@ from the list of models (see 'Model' class).
 \subsection{Method \code{new()}}{
 Create a new AgghooCV object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$new(data, target, task, gmodel, quality = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$new(data, target, task, gmodel, loss = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -36,8 +44,7 @@ Create a new AgghooCV object.
 
 \item{\code{gmodel}}{Generic model returning a predictive function}
 
-\item{\code{quality}}{Function assessing the quality of a prediction;
-quality(y1, y2) --> real number}
+\item{\code{loss}}{Function assessing the error of a prediction}
 }
 \if{html}{\out{</div>}}
 }
@@ -48,10 +55,7 @@ quality(y1, y2) --> real number}
 \subsection{Method \code{fit()}}{
 Fit an agghoo model.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$fit(
-  CV = list(type = "MC", V = 10, test_size = 0.2, shuffle = TRUE),
-  mode = "agghoo"
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$fit(CV = list(type = "MC", V = 10, test_size = 0.2, shuffle = TRUE))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -64,8 +68,6 @@ Fit an agghoo model.
   (irrelevant for V-fold). Default: 0.2.
 - shuffle: wether or not to shuffle data before V-fold.
   Irrelevant for Monte-Carlo; default: TRUE}
-
-\item{\code{mode}}{"agghoo" or "standard" (for usual cross-validation)}
 }
 \if{html}{\out{</div>}}
 }
@@ -76,19 +78,26 @@ Fit an agghoo model.
 \subsection{Method \code{predict()}}{
 Predict an agghoo model (after calling fit())
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$predict(X, weight = "uniform")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$predict(X)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{X}}{Matrix or data.frame to predict}
-
-\item{\code{weight}}{"uniform" (default) or "quality" to weight votes or
-average models performances (TODO: bad idea?!)}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getParams"></a>}}
+\if{latex}{\out{\hypertarget{method-getParams}{}}}
+\subsection{Method \code{getParams()}}{
+Return the list of V best parameters (after calling fit())
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$getParams()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

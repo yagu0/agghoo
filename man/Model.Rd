@@ -21,6 +21,7 @@ Model family can be chosen among "rf", "tree", "ppr" and "knn" for now.
 \itemize{
 \item \href{#method-new}{\code{Model$new()}}
 \item \href{#method-get}{\code{Model$get()}}
+\item \href{#method-getParam}{\code{Model$getParam()}}
 \item \href{#method-clone}{\code{Model$clone()}}
 }
 }
@@ -55,7 +56,6 @@ automatically given data and target nature if not provided.}
 \if{latex}{\out{\hypertarget{method-get}{}}}
 \subsection{Method \code{get()}}{
 Returns the model at index "index", trained on dataHO/targetHO.
-index is between 1 and self$nmodels.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$get(dataHO, targetHO, index)}\if{html}{\out{</div>}}
 }
@@ -67,6 +67,23 @@ index is between 1 and self$nmodels.
 
 \item{\code{targetHO}}{Vector of targets (generally numeric or factor)}
 
+\item{\code{index}}{Index of the model in 1...nmodels}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getParam"></a>}}
+\if{latex}{\out{\hypertarget{method-getParam}{}}}
+\subsection{Method \code{getParam()}}{
+Returns the parameter at index "index".
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$getParam(index)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
 \item{\code{index}}{Index of the model in 1...nmodels}
 }
 \if{html}{\out{</div>}}

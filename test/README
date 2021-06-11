@@ -1,0 +1,7 @@
+# Usage
+#######
+
+source("compareToCV.R")
+
+# rseed: >= 0 for reproducibility.
+compareToCV(data, target_column_index, rseed = -1)

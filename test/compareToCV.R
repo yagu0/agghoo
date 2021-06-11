@@ -37,6 +37,8 @@ standardCV <- function(data, target, task = NULL, gmodel = NULL, params = NULL,
           }
         }
       }
+      else
+        mean(abs(y1 - y2))
     }
   }
 

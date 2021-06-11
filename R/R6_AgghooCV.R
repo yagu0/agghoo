@@ -98,7 +98,7 @@ AgghooCV <- R6::R6Class("AgghooCV",
         all_predictions[,v] <- private$pmodels[[v]]$model(X)
       if (private$task == "regression")
         # Easy case: just average each row
-        rowSums(all_predictions)
+        return (rowMeans(all_predictions))
       # "Hard" classification:
       apply(all_predictions, 1, function(row) {
         t <- table(row)

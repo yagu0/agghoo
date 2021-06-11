@@ -92,14 +92,14 @@ standardCV <- function(data, target, task = NULL, gmodel = NULL, params = NULL,
   best_model[[ sample(length(best_model), 1) ]]
 }
 
-compareToCV <- function(df, t_idx, task=NULL, rseed=-1, verbose=TRUE) {
+compareToCV <- function(df, t_idx, task=NULL, rseed=-1, verbose=TRUE, ...) {
   if (rseed >= 0)
     set.seed(rseed)
   if (is.null(task))
     task <- ifelse(is.numeric(df[,t_idx]), "regression", "classification")
   n <- nrow(df)
   test_indices <- sample( n, round(n / ifelse(n >= 500, 10, 5)) )
-  a <- agghoo(df[-test_indices,-t_idx], df[-test_indices,t_idx], task)
+  a <- agghoo(df[-test_indices,-t_idx], df[-test_indices,t_idx], task, ...)
   a$fit()
   if (verbose) {
     print("Parameters:")
@@ -112,7 +112,7 @@ compareToCV <- function(df, t_idx, task=NULL, rseed=-1, verbose=TRUE) {
   if (verbose)
     print(paste("error agghoo:", err_a))
   # Compare with standard cross-validation:
-  s <- standardCV(df[-test_indices,-t_idx], df[-test_indices,t_idx], task)
+  s <- standardCV(df[-test_indices,-t_idx], df[-test_indices,t_idx], task, ...)
   if (verbose)
     print(paste( "Parameter:", s$param ))
   ps <- s$model(df[test_indices,-t_idx])
@@ -121,16 +121,16 @@ compareToCV <- function(df, t_idx, task=NULL, rseed=-1, verbose=TRUE) {
                   mean(abs(ps - df[test_indices,t_idx])))
   if (verbose)
     print(paste("error CV:", err_s))
-  c(err_a, err_s)
+  invisible(c(err_a, err_s))
 }
 
 library(parallel)
-compareMulti <- function(df, t_idx, task = NULL, N = 100, nc = NA) {
+compareMulti <- function(df, t_idx, task = NULL, N = 100, nc = NA, ...) {
   if (is.na(nc))
     nc <- detectCores()
   errors <- mclapply(1:N,
                      function(n) {
-                       compareToCV(df, t_idx, task, n, verbose=FALSE) },
+                       compareToCV(df, t_idx, task, n, verbose=FALSE, ...) },
                      mc.cores = nc)
   print("error agghoo vs. cross-validation:")
   Reduce('+', errors) / N

@@ -89,7 +89,8 @@ AgghooCV <- R6::R6Class("AgghooCV",
         return (invisible(NULL))
       }
       V <- length(private$pmodels)
-      if (length(private$pmodels[[1]]$model(X[1,])) >= 2)
+      oneLineX <- as.data.frame(t(as.matrix(X[1,])))
+      if (length(private$pmodels[[1]]$model(oneLineX)) >= 2)
         # Soft classification:
         return (Reduce("+", lapply(private$pmodels, function(m) m$model(X))) / V)
       n <- nrow(X)

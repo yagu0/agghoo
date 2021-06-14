@@ -73,9 +73,15 @@ Model <- R6::R6Class("Model",
         function(dataHO, targetHO, param) {
           require(rpart)
           method <- ifelse(task == "classification", "class", "anova")
+          if (is.null(colnames(dataHO)))
+            colnames(dataHO) <- paste0("V", 1:ncol(dataHO))
           df <- data.frame(cbind(dataHO, target=targetHO))
           model <- rpart::rpart(target ~ ., df, method=method, control=list(cp=param))
-          function(X) predict(model, X)
+          function(X) {
+            if (is.null(colnames(X)))
+              colnames(X) <- paste0("V", 1:ncol(X))
+            predict(model, as.data.frame(X))
+          }
         }
       }
       else if (family == "rf") {
@@ -115,18 +121,17 @@ Model <- R6::R6Class("Model",
         require(rpart)
         df <- data.frame(cbind(data, target=target))
         ctrl <- list(
+          cp = 0,
           minsplit = 2,
           minbucket = 1,
-          maxcompete = 0,
-          maxsurrogate = 0,
-          usesurrogate = 0,
-          xval = 0,
-          surrogatestyle = 0,
-          maxdepth = 30)
+          xval = 0)
         r <- rpart(target ~ ., df, method="class", control=ctrl)
         cps <- r$cptable[-1,1]
-        if (length(cps) <= 11)
+        if (length(cps) <= 11) {
+          if (length(cps == 0))
+            stop("No cross-validation possible: select another model")
           return (cps)
+        }
         step <- (length(cps) - 1) / 10
         cps[unique(round(seq(1, length(cps), step)))]
       }

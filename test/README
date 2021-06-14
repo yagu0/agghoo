@@ -15,3 +15,8 @@ compareToCV(data, target_column_index, rseed = -1)
 > compareMulti(PimaIndiansDiabetes, 9, N=100)
 [1] "error agghoo vs. cross-validation:"
 [1] 0.2579221 0.2645455
+
+# WARNING: slow!
+> compareMulti(LetterRecognition, 1, N=100)
+[1] "error agghoo vs. cross-validation:"
+[1] 0.03870 0.04376

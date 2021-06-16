@@ -1,6 +1,6 @@
 #' agghoo
 #'
-#' Run the agghoo procedure (or standard cross-validation).
+#' Run the (core) agghoo procedure.
 #' Arguments specify the list of models, their parameters and the
 #' cross-validation settings, among others.
 #'
@@ -33,6 +33,8 @@
 #' a_cla <- agghoo(iris[,-5], iris[,5])
 #' a_cla$fit()
 #' pc <- a_cla$predict(iris[,-5] + rnorm(600, sd=0.1))
+#'
+#' @seealso Function \code{\link{compareTo}}
 #'
 #' @references
 #' Guillaume Maillard, Sylvain Arlot, Matthieu Lerasle. "Aggregated hold-out".

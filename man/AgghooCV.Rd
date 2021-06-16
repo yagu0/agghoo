@@ -7,13 +7,6 @@
 Class encapsulating the methods to run to obtain the best predictor
 from the list of models (see 'Model' class).
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{params}}{List of parameters of the V selected models}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -61,10 +54,10 @@ Fit an agghoo model.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{CV}}{List describing cross-validation to run. Slots:
-- type: 'vfold' or 'MC' for Monte-Carlo (default: MC)
-- V: number of runs (default: 10)
-- test_size: percentage of data in the test dataset, for MC
+\item{\code{CV}}{List describing cross-validation to run. Slots: \cr
+- type: 'vfold' or 'MC' for Monte-Carlo (default: MC) \cr
+- V: number of runs (default: 10) \cr
+- test_size: percentage of data in the test dataset, for MC \cr
   (irrelevant for V-fold). Default: 0.2.
 - shuffle: wether or not to shuffle data before V-fold.
   Irrelevant for Monte-Carlo; default: TRUE}

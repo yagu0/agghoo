@@ -25,11 +25,11 @@ AgghooCV <- R6::R6Class("AgghooCV",
       private$loss <- loss
     },
     #' @description Fit an agghoo model.
-    #' @param CV List describing cross-validation to run. Slots:
-    #'          - type: 'vfold' or 'MC' for Monte-Carlo (default: MC)
-    #'          - V: number of runs (default: 10)
+    #' @param CV List describing cross-validation to run. Slots: \cr
+    #'          - type: 'vfold' or 'MC' for Monte-Carlo (default: MC) \cr
+    #'          - V: number of runs (default: 10) \cr
     #'          - test_size: percentage of data in the test dataset, for MC
-    #'            (irrelevant for V-fold). Default: 0.2.
+    #'            (irrelevant for V-fold). Default: 0.2. \cr
     #'          - shuffle: wether or not to shuffle data before V-fold.
     #'            Irrelevant for Monte-Carlo; default: TRUE
     fit = function(

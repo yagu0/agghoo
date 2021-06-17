@@ -1,1 +1,4 @@
 Support des valeurs manquantes (cf. mlbench::Ozone dataset)
+Compare with CV-voting (mode="voting" ?)
+Supprimer randomForest ? (Méthode déjà de type agrégation)
+(Remplacer par... ?)

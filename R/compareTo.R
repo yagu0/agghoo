@@ -175,7 +175,7 @@ compareMulti <- function(
 #'
 #' @export
 compareRange <- function(
-  data, target, method_s, N=100, nc=NA, floss=NULL, V_range=c(10,15,20,), ...
+  data, target, method_s, N=100, nc=NA, floss=NULL, V_range=c(10,15,20), ...
 ) {
   args <- list(...)
   # Avoid warnings if V is left unspecified:

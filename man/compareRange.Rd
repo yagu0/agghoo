@@ -11,7 +11,7 @@ compareRange(
   N = 100,
   nc = NA,
   floss = NULL,
-  V_range = c(10, 15, 20, ),
+  V_range = c(10, 15, 20),
   ...
 )
 }

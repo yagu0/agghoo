@@ -1,3 +1,5 @@
+# Internal usage: check and fill arguments with default values.
+
 defaultLoss_classif <- function(y1, y2) {
   if (is.null(dim(y1)))
     # Standard case: "hard" classification
@@ -80,7 +82,7 @@ checkDaTa <- function(data, target) {
 checkTask <- function(task, target) {
   if (!is.null(task))
     task <- match.arg(task, c("classification", "regression"))
-  task <- ifelse(is.numeric(target), "regression", "classification")
+  ifelse(is.numeric(target), "regression", "classification")
 }
 
 checkModPar <- function(gmodel, params) {

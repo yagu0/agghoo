@@ -1,3 +1,1 @@
-Comparer à COBRA ?
-https://github.com/cran/COBRA/blob/master/R/COBRA.R
-https://www.lpsm.paris/pageperso/biau/BIAU/bfgm.pdf
+Support des valeurs manquantes (cf. mlbench::Ozone dataset)

@@ -77,10 +77,18 @@ Model <- R6::R6Class("Model",
             colnames(dataHO) <- paste0("V", 1:ncol(dataHO))
           df <- data.frame(cbind(dataHO, target=targetHO))
           model <- rpart::rpart(target ~ ., df, method=method, control=list(cp=param))
+          if (task == "regression")
+            type <- "vector"
+          else {
+            if (is.null(dim(targetHO)))
+              type <- "class"
+            else
+              type <- "prob"
+          }
           function(X) {
             if (is.null(colnames(X)))
               colnames(X) <- paste0("V", 1:ncol(X))
-            predict(model, as.data.frame(X))
+            predict(model, as.data.frame(X), type=type)
           }
         }
       }
@@ -139,7 +147,7 @@ Model <- R6::R6Class("Model",
         p <- ncol(data)
         # Use caret package to obtain the CV grid of mtry values
         require(caret)
-        caret::var_seq(p, classification = (task == "classificaton"),
+        caret::var_seq(p, classification = (task == "classification"),
                        len = min(10, p-1))
       }
       else if (family == "ppr")

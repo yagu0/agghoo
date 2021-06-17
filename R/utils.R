@@ -1,3 +1,4 @@
+# Helper for cross-validation: return the next test indices.
 get_testIndices <- function(n, CV, v, shuffle_inds) {
   if (CV$type == "vfold") {
     # Slice indices (optionnally shuffled)
@@ -13,6 +14,7 @@ get_testIndices <- function(n, CV, v, shuffle_inds) {
   test_indices
 }
 
+# Helper which split data into training and testing parts.
 splitTrainTest <- function(data, target, testIdx) {
   dataTrain <- data[-testIdx,]
   targetTrain <- target[-testIdx]

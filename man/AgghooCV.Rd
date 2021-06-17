@@ -23,7 +23,7 @@ from the list of models (see 'Model' class).
 \subsection{Method \code{new()}}{
 Create a new AgghooCV object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$new(data, target, task, gmodel, loss = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$new(data, target, task, gmodel, loss)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -48,19 +48,20 @@ Create a new AgghooCV object.
 \subsection{Method \code{fit()}}{
 Fit an agghoo model.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$fit(CV = list(type = "MC", V = 10, test_size = 0.2, shuffle = TRUE))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AgghooCV$fit(CV = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{CV}}{List describing cross-validation to run. Slots: \cr
-- type: 'vfold' or 'MC' for Monte-Carlo (default: MC) \cr
-- V: number of runs (default: 10) \cr
-- test_size: percentage of data in the test dataset, for MC \cr
-  (irrelevant for V-fold). Default: 0.2.
-- shuffle: wether or not to shuffle data before V-fold.
-  Irrelevant for Monte-Carlo; default: TRUE}
+  - type: 'vfold' or 'MC' for Monte-Carlo (default: MC) \cr
+  - V: number of runs (default: 10) \cr
+  - test_size: percentage of data in the test dataset, for MC
+    (irrelevant for V-fold). Default: 0.2. \cr
+  - shuffle: wether or not to shuffle data before V-fold.
+    Irrelevant for Monte-Carlo; default: TRUE \cr
+Default (if NULL): type="MC", V=10, test_size=0.2}
 }
 \if{html}{\out{</div>}}
 }

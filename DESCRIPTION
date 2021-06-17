@@ -32,3 +32,6 @@ Collate:
     'R6_AgghooCV.R'
     'R6_Model.R'
     'A_NAMESPACE.R'
+    'checks.R'
+    'compareTo.R'
+    'utils.R'

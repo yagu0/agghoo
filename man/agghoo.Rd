@@ -33,7 +33,7 @@ loss(y1, y2) --> real number (error). Default: see R6::AgghooCV.}
 An R6::AgghooCV object o. Then, call o$fit() and finally o$predict(newData)
 }
 \description{
-Run the agghoo procedure (or standard cross-validation).
+Run the (core) agghoo procedure.
 Arguments specify the list of models, their parameters and the
 cross-validation settings, among others.
 }
@@ -51,4 +51,7 @@ pc <- a_cla$predict(iris[,-5] + rnorm(600, sd=0.1))
 \references{
 Guillaume Maillard, Sylvain Arlot, Matthieu Lerasle. "Aggregated hold-out".
 Journal of Machine Learning Research 22(20):1--55, 2021.
+}
+\seealso{
+Function \code{\link{compareTo}}
 }

@@ -15,13 +15,11 @@ AgghooCV <- R6::R6Class("AgghooCV",
     #' @param task "regression" or "classification"
     #' @param gmodel Generic model returning a predictive function
     #' @param loss Function assessing the error of a prediction
-    initialize = function(data, target, task, gmodel, loss = NULL) {
+    initialize = function(data, target, task, gmodel, loss) {
       private$data <- data
       private$target <- target
       private$task <- task
       private$gmodel <- gmodel
-      if (is.null(loss))
-        loss <- private$defaultLoss
       private$loss <- loss
     },
     #' @description Fit an agghoo model.
@@ -31,15 +29,10 @@ AgghooCV <- R6::R6Class("AgghooCV",
     #'          - test_size: percentage of data in the test dataset, for MC
     #'            (irrelevant for V-fold). Default: 0.2. \cr
     #'          - shuffle: wether or not to shuffle data before V-fold.
-    #'            Irrelevant for Monte-Carlo; default: TRUE
-    fit = function(
-      CV = list(type = "MC",
-                V = 10,
-                test_size = 0.2,
-                shuffle = TRUE)
-    ) {
-      if (!is.list(CV))
-        stop("CV: list of type, V, [test_size], [shuffle]")
+    #'            Irrelevant for Monte-Carlo; default: TRUE \cr
+    #'        Default (if NULL): type="MC", V=10, test_size=0.2
+    fit = function(CV = NULL) {
+      CV <- checkCV(CV)
       n <- nrow(private$data)
       shuffle_inds <- NULL
       if (CV$type == "vfold" && CV$shuffle)
@@ -49,22 +42,14 @@ AgghooCV <- R6::R6Class("AgghooCV",
       for (v in seq_len(CV$V)) {
         # Prepare train / test data and target, from full dataset.
         # dataHO: "data Hold-Out" etc.
-        test_indices <- private$get_testIndices(CV, v, n, shuffle_inds)
-        dataHO <- private$data[-test_indices,]
-        testX <- private$data[test_indices,]
-        targetHO <- private$target[-test_indices]
-        testY <- private$target[test_indices]
-        # [HACK] R will cast 1-dim matrices into vectors:
-        if (!is.matrix(dataHO) && !is.data.frame(dataHO))
-          dataHO <- as.matrix(dataHO)
-        if (!is.matrix(testX) && !is.data.frame(testX))
-          testX <- as.matrix(testX)
+        test_indices <- get_testIndices(n, CV, v, shuffle_inds)
+        d <- splitTrainTest(private$data, private$target, test_indices)
         best_model <- NULL
         best_error <- Inf
         for (p in seq_len(private$gmodel$nmodels)) {
-          model_pred <- private$gmodel$get(dataHO, targetHO, p)
-          prediction <- model_pred(testX)
-          error <- private$loss(prediction, testY)
+          model_pred <- private$gmodel$get(d$dataTrain, d$targetTrain, p)
+          prediction <- model_pred(d$dataTest)
+          error <- private$loss(prediction, d$targetTest)
           if (error <= best_error) {
             newModel <- list(model=model_pred, param=private$gmodel$getParam(p))
             if (error == best_error)
@@ -89,7 +74,10 @@ AgghooCV <- R6::R6Class("AgghooCV",
         return (invisible(NULL))
       }
       V <- length(private$pmodels)
-      oneLineX <- t(as.matrix(X[1,]))
+      oneLineX <- X[1,]
+      if (is.matrix(X))
+        # HACK: R behaves differently with data frames and matrices.
+        oneLineX <- t(as.matrix(oneLineX))
       if (length(private$pmodels[[1]]$model(oneLineX)) >= 2)
         # Soft classification:
         return (Reduce("+", lapply(private$pmodels, function(m) m$model(X))) / V)
@@ -119,50 +107,6 @@ AgghooCV <- R6::R6Class("AgghooCV",
     task = NULL,
     gmodel = NULL,
     loss = NULL,
-    pmodels = NULL,
-    get_testIndices = function(CV, v, n, shuffle_inds) {
-      if (CV$type == "vfold") {
-        # Slice indices (optionnally shuffled)
-        first_index = round((v-1) * n / CV$V) + 1
-        last_index = round(v * n / CV$V)
-        test_indices = first_index:last_index
-        if (!is.null(shuffle_inds))
-          test_indices <- shuffle_inds[test_indices]
-      }
-      else
-        # Monte-Carlo cross-validation
-        test_indices = sample(n, round(n * CV$test_size))
-      test_indices
-    },
-    defaultLoss = function(y1, y2) {
-      if (private$task == "classification") {
-        if (is.null(dim(y1)))
-          # Standard case: "hard" classification
-          mean(y1 != y2)
-        else {
-          # "Soft" classification: predict() outputs a probability matrix
-          # In this case "target" could be in matrix form.
-          if (!is.null(dim(y2)))
-            mean(rowSums(abs(y1 - y2)))
-          else {
-            # Or not: y2 is a "factor".
-            y2 <- as.character(y2)
-            # NOTE: the user should provide target in matrix form because
-            # matching y2 with columns is rather inefficient!
-            names <- colnames(y1)
-            positions <- list()
-            for (idx in seq_along(names))
-              positions[[ names[idx] ]] <- idx
-            mean(vapply(
-              seq_along(y2),
-              function(idx) sum(abs(y1[idx,] - positions[[ y2[idx] ]])),
-              0))
-          }
-        }
-      }
-      else
-        # Regression
-        mean(abs(y1 - y2))
-    }
+    pmodels = NULL
   )
 )

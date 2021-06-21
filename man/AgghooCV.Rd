@@ -33,11 +33,14 @@ Create a new AgghooCV object.
 
 \item{\code{target}}{Vector of targets (generally numeric or factor)}
 
-\item{\code{task}}{"regression" or "classification"}
+\item{\code{task}}{"regression" or "classification".
+Default: classification if target not numeric.}
 
-\item{\code{gmodel}}{Generic model returning a predictive function}
+\item{\code{gmodel}}{Generic model returning a predictive function
+Default: tree if mixed data, knn/ppr otherwise.}
 
-\item{\code{loss}}{Function assessing the error of a prediction}
+\item{\code{loss}}{Function assessing the error of a prediction
+Default: error rate or mean(abs(error)).}
 }
 \if{html}{\out{</div>}}
 }

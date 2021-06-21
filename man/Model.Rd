@@ -7,7 +7,7 @@
 "Model" class, containing a (generic) learning function, which from
 data + target [+ params] returns a prediction function X --> y.
 Parameters for cross-validation are either provided or estimated.
-Model family can be chosen among "rf", "tree", "ppr" and "knn" for now.
+Model family can be chosen among "tree", "ppr" and "knn" for now.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

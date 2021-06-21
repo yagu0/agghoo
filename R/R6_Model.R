@@ -4,14 +4,12 @@
 #' "Model" class, containing a (generic) learning function, which from
 #' data + target [+ params] returns a prediction function X --> y.
 #' Parameters for cross-validation are either provided or estimated.
-#' Model family can be chosen among "rf", "tree", "ppr" and "knn" for now.
+#' Model family can be chosen among "tree", "ppr" and "knn" for now.
 #'
 #' @importFrom FNN knn.reg
 #' @importFrom class knn
 #' @importFrom stats ppr
-#' @importFrom randomForest randomForest
 #' @importFrom rpart rpart
-#' @importFrom caret var_seq
 #'
 #' @export
 Model <- R6::R6Class("Model",
@@ -30,9 +28,8 @@ Model <- R6::R6Class("Model",
         # (Generic) model not provided
         all_numeric <- is.numeric(as.matrix(data))
         if (!all_numeric)
-          # At least one non-numeric column: use random forests or trees
-          # TODO: 4 = arbitrary magic number...
-          gmodel = ifelse(ncol(data) >= 4, "rf", "tree")
+          # At least one non-numeric column: use trees
+          gmodel = "tree"
         else
           # Numerical data
           gmodel = ifelse(task == "regression", "ppr", "knn")
@@ -92,15 +89,6 @@ Model <- R6::R6Class("Model",
           }
         }
       }
-      else if (family == "rf") {
-        function(dataHO, targetHO, param) {
-          require(randomForest)
-          if (task == "classification" && !is.factor(targetHO))
-            targetHO <- as.factor(targetHO)
-          model <- randomForest::randomForest(dataHO, targetHO, mtry=param)
-          function(X) predict(model, X)
-        }
-      }
       else if (family == "ppr") {
         function(dataHO, targetHO, param) {
           model <- stats::ppr(dataHO, targetHO, nterms=param)
@@ -142,13 +130,6 @@ Model <- R6::R6Class("Model",
           return (cps)
         step <- (length(cps) - 1) / 10
         cps[unique(round(seq(1, length(cps), step)))]
-      }
-      else if (family == "rf") {
-        p <- ncol(data)
-        # Use caret package to obtain the CV grid of mtry values
-        require(caret)
-        caret::var_seq(p, classification = (task == "classification"),
-                       len = min(10, p-1))
       }
       else if (family == "ppr")
         # This is nterms in ppr() function

@@ -12,9 +12,12 @@ AgghooCV <- R6::R6Class("AgghooCV",
     #' @description Create a new AgghooCV object.
     #' @param data Matrix or data.frame
     #' @param target Vector of targets (generally numeric or factor)
-    #' @param task "regression" or "classification"
+    #' @param task "regression" or "classification".
+    #'             Default: classification if target not numeric.
     #' @param gmodel Generic model returning a predictive function
+    #'               Default: tree if mixed data, knn/ppr otherwise.
     #' @param loss Function assessing the error of a prediction
+    #'             Default: error rate or mean(abs(error)).
     initialize = function(data, target, task, gmodel, loss) {
       private$data <- data
       private$target <- target

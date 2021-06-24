@@ -1,42 +1,3 @@
-#' CVvoting_core
-#'
-#' "voting" cross-validation method, added here as an example.
-#' Parameters are described in ?agghoo and ?AgghooCV
-CVvoting_core <- function(data, target, task, gmodel, params, loss, CV) {
-  CV <- checkCV(CV)
-  n <- nrow(data)
-  shuffle_inds <- NULL
-  if (CV$type == "vfold" && CV$shuffle)
-    shuffle_inds <- sample(n, n)
-  bestP <- rep(0, gmodel$nmodels)
-  gmodel <- agghoo::Model$new(data, target, task, gmodel, params)
-  for (v in seq_len(CV$V)) {
-    test_indices <- get_testIndices(n, CV, v, shuffle_inds)
-    d <- splitTrainTest(data, target, test_indices)
-    best_p <- NULL
-    best_error <- Inf
-    for (p in seq_len(gmodel$nmodels)) {
-      model_pred <- gmodel$get(d$dataTrain, d$targetTrain, p)
-      prediction <- model_pred(d$dataTest)
-      error <- loss(prediction, d$targetTest)
-      if (error <= best_error) {
-        if (error == best_error)
-          best_p[[length(best_p)+1]] <- p
-        else {
-          best_p <- list(p)
-          best_error <- error
-        }
-      }
-    }
-    for (p in best_p)
-      bestP[p] <- bestP[p] + 1
-  }
-  # Choose a param at random in case of ex-aequos:
-  maxP <- max(bestP)
-  chosenP <- sample(which(bestP == maxP), 1)
-  list(model=gmodel$get(data, target, chosenP), param=gmodel$getParam(chosenP))
-}
-
 #' standardCV_core
 #'
 #' Cross-validation method, added here as an example.
@@ -73,6 +34,45 @@ standardCV_core <- function(data, target, task, gmodel, params, loss, CV) {
   list(model=gmodel$get(data, target, chosenP), param=gmodel$getParam(chosenP))
 }
 
+#' CVvoting_core
+#'
+#' "voting" cross-validation method, added here as an example.
+#' Parameters are described in ?agghoo and ?AgghooCV
+CVvoting_core <- function(data, target, task, gmodel, params, loss, CV) {
+  CV <- checkCV(CV)
+  n <- nrow(data)
+  shuffle_inds <- NULL
+  if (CV$type == "vfold" && CV$shuffle)
+    shuffle_inds <- sample(n, n)
+  gmodel <- agghoo::Model$new(data, target, task, gmodel, params)
+  bestP <- rep(0, gmodel$nmodels)
+  for (v in seq_len(CV$V)) {
+    test_indices <- get_testIndices(n, CV, v, shuffle_inds)
+    d <- splitTrainTest(data, target, test_indices)
+    best_p <- NULL
+    best_error <- Inf
+    for (p in seq_len(gmodel$nmodels)) {
+      model_pred <- gmodel$get(d$dataTrain, d$targetTrain, p)
+      prediction <- model_pred(d$dataTest)
+      error <- loss(prediction, d$targetTest)
+      if (error <= best_error) {
+        if (error == best_error)
+          best_p[[length(best_p)+1]] <- p
+        else {
+          best_p <- list(p)
+          best_error <- error
+        }
+      }
+    }
+    for (p in best_p)
+      bestP[p] <- bestP[p] + 1
+  }
+  # Choose a param at random in case of ex-aequos:
+  maxP <- max(bestP)
+  chosenP <- sample(which(bestP == maxP), 1)
+  list(model=gmodel$get(data, target, chosenP), param=gmodel$getParam(chosenP))
+}
+
 #' standardCV_run
 #'
 #' Run and eval the standard cross-validation procedure.
@@ -89,6 +89,32 @@ standardCV_run <- function(
   loss <- checkLoss(args$loss, task)
   CV <- checkCV(args$CV)
   s <- standardCV_core(
+    dataTrain, targetTrain, task, modPar$gmodel, modPar$params, loss, CV)
+  if (verbose)
+    print(paste( "Parameter:", s$param ))
+  p <- s$model(dataTest)
+  err <- floss(p, targetTest)
+  if (verbose)
+    print(paste("error CV:", err))
+  invisible(err)
+}
+
+#' CVvoting_run
+#'
+#' Run and eval the voting cross-validation procedure.
+#' Parameters are rather explicit except "floss", which corresponds to the
+#' "final" loss function, applied to compute the error on testing dataset.
+#'
+#' @export
+CVvoting_run <- function(
+  dataTrain, dataTest, targetTrain, targetTest, floss, verbose, ...
+) {
+  args <- list(...)
+  task <- checkTask(args$task, targetTrain)
+  modPar <- checkModPar(args$gmodel, args$params)
+  loss <- checkLoss(args$loss, task)
+  CV <- checkCV(args$CV)
+  s <- CVvoting_core(
     dataTrain, targetTrain, task, modPar$gmodel, modPar$params, loss, CV)
   if (verbose)
     print(paste( "Parameter:", s$param ))

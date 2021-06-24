@@ -27,10 +27,10 @@ URL: https://git.auder.net/?p=agghoo.git
 License: MIT + file LICENSE
 RoxygenNote: 7.1.1
 Collate: 
+    'compareTo.R'
     'agghoo.R'
     'R6_AgghooCV.R'
     'R6_Model.R'
-    'A_NAMESPACE.R'
     'checks.R'
-    'compareTo.R'
     'utils.R'
+    'A_NAMESPACE.R'

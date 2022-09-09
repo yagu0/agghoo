@@ -14,24 +14,14 @@ Author: Sylvain Arlot <sylvain.arlot@universite-paris-saclay.fr> [cph,ctb],
     Matthieu Lerasle <matthieu.lerasle@universite-paris-saclay.fr> [cph,ctb],
     Guillaume Maillard <guillaume.maillard@uni.lu> [cph,ctb]
 Maintainer: Benjamin Auder <benjamin.auder@universite-paris-saclay.fr>
-Depends:
-    R (>= 3.5.0)
-Imports:
-    class,
-    parallel,
-    R6,
-    rpart,
-    FNN
-Suggests:
-    roxygen2
+Depends: R (>= 3.5.0)
+Imports: class, parallel, R6, rpart, FNN
+Suggests: roxygen2
 URL: https://git.auder.net/?p=agghoo.git
 License: MIT + file LICENSE
 RoxygenNote: 7.2.1
-Collate: 
-    'compareTo.R'
-    'agghoo.R'
-    'R6_AgghooCV.R'
-    'R6_Model.R'
-    'checks.R'
-    'utils.R'
-    'A_NAMESPACE.R'
+Collate: 'compareTo.R' 'agghoo.R' 'R6_AgghooCV.R' 'R6_Model.R'
+        'checks.R' 'utils.R' 'A_NAMESPACE.R'
+NeedsCompilation: no
+Packaged: 2022-09-09 15:45:56 UTC; auder
+Built: R 4.2.1; ; 2022-09-09 15:46:05 UTC; unix

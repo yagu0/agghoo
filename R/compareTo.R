@@ -203,7 +203,6 @@ compareTo <- function(
 compareMulti <- function(
   data, target, method_s, N=100, nc=NA, floss=NULL, verbose=TRUE, ...
 ) {
-  base::require(parallel)
   if (is.na(nc))
     nc <- parallel::detectCores()
 
